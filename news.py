@@ -15,6 +15,6 @@ def get_articles(query):
                                       page=1)
     return all_articles
 
-print(get_articles("hello"))
+
 
 

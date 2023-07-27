@@ -47,6 +47,7 @@ footer{
     text-align: center;
     width: 100%;
     margin-top: auto;
+
     
 
 
@@ -63,6 +64,7 @@ footer .text{
 
 .sub-contain .text-contain{
     margin-left: 30%;
+    margin-bottom: 15%;
 }
 
 .text-contain button{

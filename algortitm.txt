@@ -1,0 +1,79 @@
+from collections import Counter
+import requests
+from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
+from nltk.tokenize import sent_tokenize, word_tokenize
+import re
+import nltk
+import heapq
+
+
+
+##function to get text from the article
+def get_text(url):
+    response=requests.get(url)
+    parsed_article =BeautifulSoup(response.text,"html.parser")
+
+    paragraphs = parsed_article.find_all('p')
+    
+    article_text=""
+
+    for p in paragraphs:
+        article_text=article_text+p.text
+    
+    article_text = re.sub(r'\[[0-9]*\]', ' ', article_text)
+    article_text = re.sub(r'\s+', ' ', article_text)
+    
+    formatted_article_text = re.sub('[^a-zA-Z]', ' ', article_text )
+    formatted_article_text = re.sub(r'\s+', ' ', formatted_article_text)
+    
+    return formatted_article_text,article_text
+        
+formatted,regtext=get_text('https://www.engadget.com/russia-bans-state-officials-from-using-apple-devices-over-us-spying-concerns-183732151.html')
+
+sentences=sent_tokenize(regtext)
+words=word_tokenize(formatted)
+
+word_nostop=[]
+
+stopwords = nltk.corpus.stopwords.words('english')
+
+
+
+for word in words:
+    
+    if word.lower() not in stopwords:
+        word_nostop.append(word)
+
+print(word_nostop)
+
+
+
+words_hash=Counter(word_nostop)
+
+max_freq=max(list(words_hash.values()))
+
+for words in words_hash:
+    freq=words_hash[words]
+    rel_freq=freq/max_freq
+    words_hash[words]=rel_freq
+#print(words_hash)
+
+sentence_dict={}
+
+sentence_scores=dict()
+
+for sentence in sentences:
+        for word in nltk.word_tokenize(sentence.lower()):
+            if word not in stopwords:
+                if word in words_hash.keys():
+                    if len(sentence.split(' ')) < 30:
+                        if sentence not in sentence_scores.keys():
+                            sentence_scores[sentence] = words_hash[word]
+                        else:
+                            sentence_scores[sentence] += words_hash[word]
+
+summary_sentences = heapq.nlargest(3, sentence_scores, key=sentence_scores.get)
+
+summary = ' '.join(summary_sentences)
+print(summary)
