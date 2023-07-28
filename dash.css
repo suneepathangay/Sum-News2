@@ -64,6 +64,13 @@ button{
     margin-top:20px;
 }
 
+textarea{
+    font-family: 'Poppins',sans-serif;
+    width: 500px;
+    height: 500px;
+
+}
+
 button:hover{
     opacity: 0.6;
 }

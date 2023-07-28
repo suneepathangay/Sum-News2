@@ -18,14 +18,53 @@
         <h2>SumNews</h2>
         <p class="text">Enter in a topic you want to find news on</p>
 
-        <input id="input" placeholder="ex, Russia-Ukraine">
+        <input id="input" placeholder="ex, Russia-Ukraine War" oninput="setQuery()">
 
-        <button onclick="">Search</button>
+        <button onclick="submitQuery()">Search</button>
+
+        <h3>Or feel free to copy and paste a custom article fo your choice</h3>
+
+        <textarea id="w3review" name="w3review" rows="4" cols="50" placeholder="paste article text">
+           
+        </textarea>
+
+        <button>Submit</button>
+
+
 
 
 
 
 
     </div>
+
+    <script>
+        let query=""
+        function setQuery(){
+            query=document.getElementById('input').value
+            console.log(query)
+        }
+
+        async function submitQuery(){
+            const result=await fetch('http://127.0.0.1:5000/search',{
+                method:'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+
+
+                body:JSON.stringify({query:query})
+            })
+            console.log(result)
+
+
+
+        }
+        
+        
+
+    </script>
 </body>
 </html>

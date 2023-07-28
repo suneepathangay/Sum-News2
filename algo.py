@@ -6,13 +6,14 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 from heapq import heapify,heappop
+import networkx as nx
 
 
 def return_summary(text):
 
-# text="On the morning of February 24th, 2022, Russian forces launched a multi-pronged invasion by land, air, and sea on Ukraine. The deadly conflict continues unabated. Even as Ukrainian forces made significant ground gains, strikes by Russia against Ukraine on civilian targets exacerbated concern for humanitarian needs in winter.One year later, 17.7 million people need humanitarian assistance and nearly 8 million refugees from Ukraine have been recorded across Europe. In Ukraine, 6.3 million people are internally displaced, and 6.9 million people are sheltering in place. The UN Human Rights Monitoring Mission in Ukraine reports that from February 24 to December 26, 2022, 6,884 civilians in Ukraine had been killed and 10,974 injured. The real numbers are likely much higher.A year of war has caused widespread destruction, reducing some cities to rubble, damaging or destroying hundreds of thousands of homes along with critical infrastructure and leaving millions of people with limited or no access to electricity, water or heat. Many people are living either in collective centers or damaged buildings, without basic needs for daily life and vulnerable to a range of health threats. Internally displaced persons living in collective centers are most at risk with the majority being women, children, the elderly, and people with disabilities. Overall, an estimated 14.5 million people in Ukraine need health assistance."
+    # text="On the morning of February 24th, 2022, Russian forces launched a multi-pronged invasion by land, air, and sea on Ukraine. The deadly conflict continues unabated. Even as Ukrainian forces made significant ground gains, strikes by Russia against Ukraine on civilian targets exacerbated concern for humanitarian needs in winter.One year later, 17.7 million people need humanitarian assistance and nearly 8 million refugees from Ukraine have been recorded across Europe. In Ukraine, 6.3 million people are internally displaced, and 6.9 million people are sheltering in place. The UN Human Rights Monitoring Mission in Ukraine reports that from February 24 to December 26, 2022, 6,884 civilians in Ukraine had been killed and 10,974 injured. The real numbers are likely much higher.A year of war has caused widespread destruction, reducing some cities to rubble, damaging or destroying hundreds of thousands of homes along with critical infrastructure and leaving millions of people with limited or no access to electricity, water or heat. Many people are living either in collective centers or damaged buildings, without basic needs for daily life and vulnerable to a range of health threats. Internally displaced persons living in collective centers are most at risk with the majority being women, children, the elderly, and people with disabilities. Overall, an estimated 14.5 million people in Ukraine need health assistance."
 
-##defining our model
+    ##defining our model
 
     model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -21,7 +22,7 @@ def return_summary(text):
 
 
 
-    stopwords=stopwords.words('english')
+    list_stopwords=stopwords.words('english')
 
     sentence_list=sent_tokenize(text)
 
@@ -30,7 +31,7 @@ def return_summary(text):
     for sentence in sentence_list:
         formatted_sent=""
         for words in sentence.lower().split(' '):
-            if words not in stopwords:
+            if words not in list_stopwords:
                 formatted_sent=formatted_sent+' '+words
         nostop_senteces.append(formatted_sent)
 
@@ -85,32 +86,62 @@ def return_summary(text):
     # print(similairty_matrix)
 
     # print(sim_matrix)
+    
+    
 
 
-    vector_scores=[]
+    # vector_scores=[]
 
-    for i in range(len(sim_matrix)):
-        total_score=0
-        for scores in sim_matrix[i]:
-            total_score=total_score+scores
-        vector_scores.append((-total_score,i))
+    # for i in range(len(sim_matrix)):
+    #     total_score=0
+    #     for scores in sim_matrix[i]:
+    #         total_score=total_score+scores
+    #     vector_scores.append((-total_score,i))
 
-    # print(vector_scores)
+    # # print(vector_scores)
 
-    heapify(vector_scores)
+    # heapify(vector_scores)
 
+    # summary=""
+
+    # for i in range(4):
+    #     index=heappop(vector_scores)
+    #     print(index[1])
+    #     sentence=sentence_list[index[1]]
+    #     summary=summary+sentence
+
+    # # print(summary)
+    # return summary
+    
+    nx_graph = nx.from_numpy_array(sim_matrix)
+    scores = nx.pagerank(nx_graph)
+    
+    list_scores=[]
+    
+    for score in scores:
+        list_scores.append((-scores[score],score))
+    
+    heapify(list_scores)
+    
     summary=""
-
+    
     for i in range(3):
-        index=heappop(vector_scores)
-        print(index[1])
-        sentence=sentence_list[index[1]]
-        summary=summary+sentence
-
-    # print(summary)
-    return summary
+        index=heappop(list_scores)
+        index=index[1]
+        summary=summary+sentence_list[index]
         
-  
+    
+
+    return summary
+    
+        
+        
+    
+    
+        
+
+
+
 
 
             

@@ -21,12 +21,10 @@ def dash():
 def search():
     data=request.get_json()
     query=data['query']
-    articles=get_articles(query)
-    #return articles
-    summaries={}
+    print(query)
+    articles=get_articles(query=query)
+    return articles
     
-    for i in range(3):
-        return
         
         
         
