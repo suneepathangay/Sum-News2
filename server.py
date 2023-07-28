@@ -12,6 +12,10 @@ CORS(app)
 def home():
     return render_template('home.html')
 
+@app.route('/dash',methods=["GET"])
+def dash():
+    return render_template('dash.html')
+
 
 @app.route('/search',methods=["POST"])
 def search():
