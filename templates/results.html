@@ -7,54 +7,59 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/results.css') }}">
        
     </head>
-<body>
-    <header>
-        <h1 onclick="goHome()">SumNews</h1>
-    </header>
-
-
-
-    <div class="main">
-
-        <h2>Your Summary</h2>
-
-        <textarea readonly id="summary" rows="4" cols="50" placeholder="paste article text" >
-           
-        </textarea>
-
-        
-    </div>
-
-
-
-    <script>
-
-        function getSummary(){
-
-            const result=localStorage.getItem('summary')
-
-            let textarea=document.getElementById('summary')
-
-            textarea.value=result
-
-
-
-        
-        }
-
-        window.onload=function(){
-            getSummary()
-        }
-
-        function goHome(){
-            window.location.href=('/home.html')
-
-
-        }
-        
-
-
-    </script>
-
-</body>
+    <body>
+        <header>
+            <h1 onclick="goHome()">SumNews</h1>
+        </header>
+    
+    
+    
+        <div class="main">
+    
+            <h2>Your Summary</h2>
+    
+            <textarea readonly id="summary" rows="4" cols="50" placeholder="paste article text" >
+               
+            </textarea>
+    
+    
+            <button onclick="goBack()">Back</button>
+    
+            
+        </div>
+    
+    
+    
+        <script>
+    
+            function getSummary(){
+    
+                const result=localStorage.getItem('summary')
+    
+                let textarea=document.getElementById('summary')
+    
+                textarea.value=result
+    
+    
+    
+            
+            }
+    
+            window.onload=function(){
+                getSummary()
+            }
+    
+            function goHome(){
+                window.location.href='/home'
+            }
+    
+            function goBack(){
+                window.location.href='/dash'
+            }
+            
+    
+    
+        </script>
+    
+    </body>
 </html>

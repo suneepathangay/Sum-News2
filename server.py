@@ -27,8 +27,11 @@ def search():
         pass
     
     if text !=None:
-        summary=return_summary(text)
-        return [summary]
+        try:
+            summary=return_summary(text)
+            return [summary]
+        except:
+            return ["error"]
     
     return "hello"
     

@@ -1,26 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SumNews</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
-   
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SumNews</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
+       
+    </head>
 <body>
     <header>
-        <h1 onclick="window.open('/test.html')">SumNews</h1>
+        <h1 onclick="goHome()">SumNews</h1>
     </header>
 
 
 
     <div class="main">
         <h2>SumNews</h2>
-        <p class="text">Enter in a topic you want to find news on</p>
+        <h3 class="text">Enter in the url for your deisred article</h3>
 
-        <input id="input" placeholder="ex, Russia-Ukraine">
+        <input id="input" placeholder="ex,https://www.cnn.com " oninput="setQuery()">
 
-        <button onclick="">Search</button>
+        <button onclick="submitQuery()">Search</button>
+
+        <h3>Or feel free to copy and paste a custom article fo your choice</h3>
+
+        <textarea id="article" rows="4" cols="50" placeholder="paste article text" oninput="readBox()">
+           
+        </textarea>
+
+        <button onclick="sendBox()">Submit</button>
+
+        <p id ="error" class="error-message">Something was wrong with yout article</p>
+
+        
+            <!-- <h3>Results</h3>
+
+            <textarea id="results" rows="4" cols="50" placeholder="paste article text" oninput="readBox()">
+           
+            </textarea> -->
+
+
+
+
+        
+
+
 
 
 
@@ -29,14 +53,81 @@
     </div>
 
     <script>
-        let query=document.get
+        let url=""
+        function setQuery(){
+            query=document.getElementById('input').value
+            console.log(query)
+        }
+
+        async function submitQuery(){
+            const result=await fetch('http://127.0.0.1:5000/search',{
+                method:'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
 
 
-        async function sendQuery(){
-            
+
+                body:JSON.stringify({
+                    
+                    url:url,
+                    box:null
+                
+                })
+            })
+            console.log(result)
+
 
 
         }
+        
+        let box="";
+
+        function readBox(){
+
+            box=document.getElementById("article").value
+            console.log(box)
+        }
+
+        async function sendBox(){
+            
+            const result=await fetch('http://127.0.0.1:5000/search',{
+                method:'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({
+                    
+                    url:url,
+                    box:box
+                
+                })
+
+
+            })
+
+            const data=await result.json()
+            console.log(data[0])
+
+            localStorage.setItem('summary',data[0])
+            if(data[0]!="error"){
+                window.location.href='/results'
+            
+            }else{
+                let error=document.getElementById("error")
+                error.style.visibility='visible'
+            }
+        }
+
+        function goHome(){
+            window.location.href='/home'
+        }
+
+        
+        
+        
 
     </script>
 </body>
