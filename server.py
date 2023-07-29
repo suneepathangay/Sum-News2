@@ -21,10 +21,7 @@ def dash():
 @app.route('/search',methods=["POST"])
 def search():
     data=request.get_json()
-    url=data['url']
     text=data['box']
-    if url!= None:
-        pass
     
     if text !=None:
         try:
