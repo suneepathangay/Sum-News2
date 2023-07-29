@@ -1,8 +1,9 @@
 import requests
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS, cross_origin
+from algo import return_summary
 
-from news import get_articles
+
 
 app = Flask(__name__)
 
@@ -20,13 +21,21 @@ def dash():
 @app.route('/search',methods=["POST"])
 def search():
     data=request.get_json()
-    query=data['query']
-    print(query)
-    articles=get_articles(query=query)
-    return articles
+    url=data['url']
+    text=data['box']
+    if url!= None:
+        pass
+    
+    if text !=None:
+        summary=return_summary(text)
+        return [summary]
+    
+    return "hello"
     
         
-        
+@app.route('/results',methods=["GET"])
+def results():
+    return render_template('results.html')
         
         
     
