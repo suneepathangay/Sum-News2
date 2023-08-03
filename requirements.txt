@@ -50,6 +50,7 @@ newsapi-python==0.2.7
 newspaper3k==0.2.8
 nltk==3.8.1
 numpy==1.20.3
+opencv-python==4.8.0.74
 packaging==23.1
 pandas==1.1.5
 pathy==0.10.2
@@ -67,6 +68,8 @@ regex==2023.6.3
 requests==2.31.0
 requests-file==1.5.1
 safetensors==0.3.1
+scikit-learn==1.0.2
+scipy==1.7.3
 sentence-transformers==2.2.2
 sentencepiece==0.1.99
 sgmllib3k==1.0.0
@@ -84,11 +87,12 @@ threadpoolctl==3.1.0
 tinysegmenter==0.3
 tldextract==3.4.4
 tokenizers==0.13.3
-torch==1.12.1
+torch==1.13.1
+torchvision==0.14.1
 tqdm==4.65.0
 transformers==4.30.2
 typer==0.9.0
-typing_extensions==4.5.0
+typing_extensions>=3.7.4.1,<4.5.0
 urllib3==1.26.6
 wasabi==1.1.2
 Werkzeug==2.2.3
