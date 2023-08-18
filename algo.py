@@ -52,9 +52,7 @@ def return_summary(text):
     
     sentence_embeddings=model.encode(nostop_senteces,convert_to_tensor=True)
     
-    print(len(sentence_list))
-    print(len(nostop_senteces))
-    print(len(sentence_embeddings))
+    
     
     def cosine_simialrit(vector1,vector2):
         cosine_score=util.cos_sim(vector1,vector2)

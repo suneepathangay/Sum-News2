@@ -17,6 +17,9 @@ def home():
 def dash():
     return render_template('dash.html')
 
+@app.route('/ocr',methods=["GET"])
+def ocr():
+    return render_template('ocr.html')
 
 @app.route('/search',methods=["POST"])
 def search():
